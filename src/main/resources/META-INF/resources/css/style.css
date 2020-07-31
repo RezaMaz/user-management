@@ -1,0 +1,25 @@
+.my-row-editor {
+    float: left;
+    margin: 8px 6px 0 0;
+}
+
+.my-delete-command-button {
+    float: left;
+    background: none !important;
+    border: none !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none !important;
+}
+
+.my-delete-command-button span {
+    color: black;
+}
+
+.my-action {
+    width: 100px;
+}
+
+.add-user-title-bar > .ui-panel-titlebar {
+    background: deepskyblue;
+}

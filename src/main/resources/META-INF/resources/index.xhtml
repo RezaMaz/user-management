@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
@@ -14,15 +16,79 @@
 
     <title>User Management</title>
 
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+    <h:outputStylesheet name="style.css" library="css"/>
 </h:head>
 
 <h:body>
 
-    <div class="container">
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true" life="3000"/>
 
-        <p:spinner/>
+        <p:dataTable id="userDataTable" widgetVar="userDataTable" var="user" value="#{userFormController.userList}"
+                     editable="true">
 
-    </div>
+            <p:ajax event="rowEdit" listener="#{userFormController.onRowEdit}" update=":form:userDataTable,:form:msgs"/>
+            <p:ajax event="rowEditCancel" listener="#{userFormController.onRowCancel}" update=":form:msgs"/>
+
+            <p:column headerText="First Name" sortBy="#{user.firstName}">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.firstName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.firstName}" style="width:100%"
+                                                       required="true"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Last Name" sortBy="#{user.lastName}">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.lastName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.lastName}" style="width:100%"
+                                                       required="true"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Age" sortBy="#{user.age}">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.age}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.age}" style="width:100%"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Action" styleClass="my-action">
+                <p:rowEditor styleClass="my-row-editor"/>
+                <p:commandButton icon="pi pi-times" styleClass="my-delete-command-button"
+                                 actionListener="#{userFormController.delete(user)}"
+                                 update="userDataTable"/>
+            </p:column>
+        </p:dataTable>
+
+        <p:growl id="messages" showDetail="true"/>
+
+    </h:form>
+
+    <p:panel header="Add Users" style="margin-top: 25px;" styleClass="add-user-title-bar">
+        <h:form id="addNewUserForm">
+            <h:dataTable value="#{userFormController.items}" var="item" style="margin-bottom: 25px;">
+                <h:column>
+                    <p:outputLabel for="firstName" value="First Name:"/>
+                    <p:inputText id="firstName" value="#{item.firstName}" required="true"/>
+                </h:column>
+                <h:column>
+                    <p:outputLabel for="lastName" value="Last Name:"/>
+                    <p:inputText id="lastName" value="#{item.lastName}" required="true"/>
+                </h:column>
+                <h:column>
+                    <p:outputLabel for="age" value="Age:"/>
+                    <p:inputText id="age" value="#{item.age}"/>
+                </h:column>
+            </h:dataTable>
+
+            <p:commandButton value="Add User" styleClass="ui-priority-primary"
+                             actionListener="#{userFormController.add}"
+                             update="addNewUserForm"/>
+            <p:commandButton value="Save All" styleClass="ui-priority-primary"
+                             update=":form:userDataTable,addNewUserForm"
+                             actionListener="#{userFormController.onAddAll}"/>
+        </h:form>
+    </p:panel>
 
 </h:body>
 

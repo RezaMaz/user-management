@@ -13,33 +13,33 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/user")
-public class UserController {
+public class UserRestController {
 
-    private final IUserService iUserService;
+    private final IUserService userService;
 
     @GetMapping(value = "/{id}")
     ResponseEntity<UserDTO.Info> get(@PathVariable Long id) {
-        return new ResponseEntity<>(iUserService.get(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.get(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/list")
     ResponseEntity<List<UserDTO.Info>> list() {
-        return new ResponseEntity<>(iUserService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.list(), HttpStatus.OK);
     }
 
     @PostMapping
     ResponseEntity<UserDTO.Info> create(@RequestBody UserDTO.Create request) {
-        return new ResponseEntity<>(iUserService.create(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.create(request), HttpStatus.CREATED);
     }
 
     @PutMapping()
     ResponseEntity<UserDTO.Info> update(@RequestBody UserDTO.Update request) {
-        return new ResponseEntity<>(iUserService.update(request), HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(request), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-        iUserService.delete(id);
+        userService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
